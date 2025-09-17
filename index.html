@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Quiz Generator</title>
+    <meta name="description" content="Create personalized quizzes on any topic with AI-powered question generation">
+    <meta name="author" content="AI Quiz Generator">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="AI Quiz Generator">
+    <meta property="og:description" content="Create personalized quizzes on any topic with AI-powered question generation">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+<!-- <header class="header">
+  <div class="header-content">
+    <i class="fas fa-brain header-icon"></i>
+    <h1 class="header-title">AI Quiz Generator</h1>
+  </div> -->
+
+  <!-- Profile Dropdown -->
+  <div class="profile-menu">
+    <img id="user-photo" class="profile-pic" src="https://via.placeholder.com/40" alt="Profile">
+    <div class="dropdown">
+      <p id="user-name">Guest</p>
+      <button id="logout-btn" class="quit-btn">Logout</button>
+    </div>
+  </div>
+<!-- </header> -->
+
+    
+ <!-- Auth Screen -->
+<div id="auth-screen" class="screen active">
+  <div class="container">
+    <header class="header">
+      <h1 class="header-title">Login to Continue</h1>
+    </header>
+
+    <!-- Google Login Button -->
+    <button id="google-login-btn" class="generate-btn">
+      <i class="fab fa-google"></i>
+      <span class="btn-text">Sign in with Google</span>
+    </button>
+
+    <button id="logout-btn" class="quit-btn" style="display:none;">
+      Logout
+    </button>
+  </div>
+</div>
+
+    <!-- Quiz Configuration Screen -->
+
+    <div id="config-screen" class="screen active">
+        <div class="container">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-content">
+                    <i class="fas fa-brain header-icon"></i>
+                    <h1 class="header-title">AI Quiz Generator</h1>
+                </div>
+                <p class="header-subtitle">
+                    Create personalized quizzes on any topic with AI-powered question generation
+                </p>
+            </header>
+
+            <!-- Configuration Card -->
+            <div class="config-card">
+                <div class="card-header">
+                    <i class="fas fa-sparkles card-icon"></i>
+                    <h2 class="card-title">Configure Your Quiz</h2>
+                </div>
+                
+                <form id="quiz-form" class="config-form">
+                    <!-- Topic Input -->
+                    <div class="form-group">
+                        <label for="topic" class="form-label">Quiz Topic</label>
+                        <input 
+                            type="text" 
+                            id="topic" 
+                            class="form-input" 
+                            placeholder="e.g., World History, JavaScript, Space Science..."
+                            required
+                        >
+                    </div>
+
+                    <!-- Configuration Grid -->
+                    <div class="config-grid">
+                        <!-- Difficulty -->
+                        <div class="form-group">
+                            <label for="difficulty" class="form-label">Difficulty Level</label>
+                            <select id="difficulty" class="form-select">
+                                <option value="easy">🟢 Easy</option>
+                                <option value="medium" selected>🟡 Medium</option>
+                                <option value="hard">🔴 Hard</option>
+                            </select>
+                        </div>
+
+                        <!-- Number of Questions -->
+                        <div class="form-group">
+                            <label for="questionCount" class="form-label">Number of Questions</label>
+                            <select id="questionCount" class="form-select">
+                                <option value="5" selected>5 Questions</option>
+                                <option value="10">10 Questions</option>
+                                <option value="15">15 Questions</option>
+                                <option value="20">20 Questions</option>
+                            </select>
+                        </div>
+
+                        <!-- Question Type -->
+                        <div class="form-group">
+                            <label for="questionType" class="form-label">Question Type</label>
+                            <select id="questionType" class="form-select">
+                                <option value="mcq" selected>📝 Multiple Choice</option>
+                                <option value="truefalse">✅ True/False</option>
+                                <option value="mixed">🔀 Mixed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Generate Button -->
+                    <button type="submit" id="generate-btn" class="generate-btn">
+                        <i class="fas fa-brain"></i>
+                        <span class="btn-text">Generate AI Quiz</span>
+                        <div class="loading-spinner" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            Generating Your Quiz...
+                        </div>
+                    </button>
+                </form>
+
+                <!-- Feature Highlights -->
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-clock feature-icon"></i>
+                        <span>Instant Generation</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-brain feature-icon"></i>
+                        <span>AI-Powered</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-trophy feature-icon"></i>
+                        <span>Detailed Scoring</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Interface Screen -->
+    <div id="quiz-screen" class="screen">
+        <div class="container">
+            <!-- Quiz Header -->
+            <header class="quiz-header">
+                <div class="quiz-info">
+                    <h1 class="quiz-title" id="quiz-topic-title">Quiz Topic</h1>
+                    <div class="quiz-meta">
+                        <span class="quiz-progress">
+                            Question <span id="current-question">1</span> of <span id="total-questions">5</span>
+                        </span>
+                        <div class="quiz-timer">
+                            <i class="fas fa-clock"></i>
+                            <span id="timer">00:00</span>
+                        </div>
+                    </div>
+                </div>
+                <button id="quit-quiz" class="quit-btn">
+                    <i class="fas fa-times"></i>
+                    Quit Quiz
+                </button>
+            </header>
+
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="question-card">
+                <div class="question-content">
+                    <h2 id="question-text" class="question-text">Question will appear here</h2>
+                    <div id="question-options" class="question-options">
+                        <!-- Options will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div class="question-actions">
+                    <button id="next-btn" class="next-btn" disabled>
+                        Next Question
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="results-screen" class="screen">
+        <div class="container">
+            <!-- Results Header -->
+            <header class="results-header">
+                <div class="results-title-container">
+                    <i class="fas fa-trophy results-trophy"></i>
+                    <h1 class="results-title">Quiz Complete!</h1>
+                </div>
+                <p id="score-message" class="results-message">Outstanding! 🌟</p>
+            </header>
+
+            <!-- Results Summary Card -->
+            <div class="results-card">
+                <h2 class="results-card-title">Your Score</h2>
+                <div class="score-display">
+                    <div id="score-percentage" class="score-percentage">85%</div>
+                    <p id="score-text" class="score-text">4 out of 5 correct</p>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="score-progress">
+                    <div class="progress-bar">
+                        <div id="score-progress-fill" class="progress-fill"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <span>0%</span>
+                        <span>50%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat">
+                        <i class="fas fa-target stat-icon"></i>
+                        <div class="stat-content">
+                            <p class="stat-label">Accuracy</p>
+                            <p id="accuracy-stat" class="stat-value">85%</p>
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-clock stat-icon"></i>
+                        <div class="stat-content">
+                            <p class="stat-label">Time Taken</p>
+                            <p id="time-stat" class="stat-value">2m 30s</p>
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-trophy stat-icon"></i>
+                        <div class="stat-content">
+                            <p class="stat-label">Difficulty</p>
+                            <p id="difficulty-stat" class="stat-value">Medium</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="results-actions">
+                    <button id="retake-btn" class="retake-btn">
+                        <i class="fas fa-redo"></i>
+                        Retake Quiz
+                    </button>
+                    <button id="new-quiz-btn" class="new-quiz-btn">
+                        <i class="fas fa-arrow-left"></i>
+                        New Quiz
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question Review -->
+            <div class="review-card">
+                <h2 class="review-title">Question Review</h2>
+                <div id="question-review" class="question-review">
+                    <!-- Review items will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="module" src="firebase-config.js"></script>
+<script type="module" src="userAuth.js"></script>
+<script type="module" src="quesFetch.js"></script>
+<script type="module" src="script.js"></script>
+</body>
+</html>
